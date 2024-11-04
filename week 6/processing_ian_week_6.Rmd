@@ -345,6 +345,32 @@ Flag all duplicates for exclusion.
 
 # data_processed_before_exclusions 
 
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+
+# Sample data frames (replace these with your actual data frames)
+# Assuming each data frame has a common 'ParticipantID' column for joining
+df1 <- data.frame(ParticipantID = c(1, 2, 3), Score1 = c(80, 90, 85))
+df2 <- data.frame(ParticipantID = c(1, 2, 4), Score2 = c(88, 95, 79))
+df3 <- data.frame(ParticipantID = c(2, 3, 4), Score3 = c(84, 78, 92))
+
+# Combine data frames using full_join to create a wide-format data frame
+combined_df <- df1 %>%
+  full_join(df2, by = "ParticipantID") %>%
+  full_join(df3, by = "ParticipantID")
+
+# Flag duplicates based on ParticipantID
+combined_df <- combined_df %>%
+  mutate(DuplicateFlag = duplicated(ParticipantID) | duplicated(ParticipantID, fromLast = TRUE))
+
+# View the final data frame
+print(combined_df)
+
+
+
+
+
 ```
 
 # Define master exclusion variable
